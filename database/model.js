@@ -1,5 +1,4 @@
-const { Sequelize, DataTypes, belongsTo } = require('sequelize');
-const mariadb = require('mariadb');
+const { Sequelize, DataTypes } = require('sequelize');
 // connect to database
 const dbName = 'sdcProduct';
 const dbUser = 'student';
@@ -138,4 +137,4 @@ exports.Related.belongsTo(exports.Product, {
   foreignKey: 'currentProductId',
 });
 
-exports.database.sync({alter: true});
+exports.database.sync({ alter: true });
