@@ -1,17 +1,15 @@
 const express = require('express');
 const morgan = require('morgan');
-const database = require('./database/model.js');
 
 const app = express();
-const port = process.env.port || 3000;
+const port = 3000;
 
+app.use(morgan('combined'));
 app.listen(port, () => {
   console.log(`SDC Products listening on port ${port}`);
 });
 
-app.use(morgan('combined'));
-
 // default route
 app.get('/', (req, res) => {
-  res.status(200).send('Hello from SDC Products endpoint');
+  res.send('Hello from SDC Products endpoint');
 });
