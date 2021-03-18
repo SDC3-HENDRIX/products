@@ -4,7 +4,8 @@
   "description": "The products service endpoint for System Design Capstone",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
