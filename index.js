@@ -71,12 +71,21 @@ app.get('/products/:product_id/related', (req, res) => getRelatedProducts(Number
   }));
 
 // styles
-app.get('/products/:product_id/styles', (req, res) => getProductStyles(Number(req.params.product_id))
-  .then((results) => {
-    const styleResults = {
-      product_id: req.params.product_id,
-      results,
-    };
-    res.status(200).send(styleResults);
-  })
-  .catch((error) => { console.error(`There was an error fetching styles for ${product_id}`, error); }));
+app.get('/products/:product_id/styles', (req, res) => {
+  const productId = Number(req.params.product_id);
+
+  return getProductStyles(productId)
+    .then((results) => {
+      // Adds product ID back
+      const formattedResults = {
+        product_id: req.params.product_id,
+        results,
+      };
+
+      res.status(200).send(formattedResults);
+    })
+    .catch((error) => {
+      console.error(`There was an error fetching styles for product ${productId}`, error);
+      res.status(500).send(`There was an error fetching styles for product ${productId}`);
+    });
+});
