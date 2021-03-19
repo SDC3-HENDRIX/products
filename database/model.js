@@ -91,6 +91,7 @@ exports.Style = exports.database.define('style', {
   },
   default_style: {
     type: DataTypes.BOOLEAN,
+    as: 'default?',
   },
 }, {
   underscored: true,
