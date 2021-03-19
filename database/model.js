@@ -7,6 +7,7 @@ const dbPass = 'student';
 exports.database = new Sequelize(dbName, dbUser, dbPass, {
   host: 'localhost',
   dialect: 'mariadb',
+  logging: console.log,
 });
 
 exports.database.authenticate()
@@ -20,11 +21,12 @@ exports.database.authenticate()
 exports.database.sync({ alter: true })
   .catch((error) => console.error(error));
 // Model for each table
-exports.Product = exports.database.define('Product', {
+exports.Product = exports.database.define('product', {
   product_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    underscored: true,
   },
   name: {
     type: DataTypes.STRING(128),
@@ -41,10 +43,13 @@ exports.Product = exports.database.define('Product', {
   default_price: {
     type: DataTypes.INTEGER,
   },
+}, {
+  underscored: true,
+  timestamp: false,
 });
 
 // Features
-exports.Feature = exports.database.define('Feature', {
+exports.Feature = exports.database.define('feature', {
   feature_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -56,13 +61,19 @@ exports.Feature = exports.database.define('Feature', {
   value: {
     type: DataTypes.STRING(64),
   },
+}, {
+  underscored: true,
+  timestamp: false,
 });
 // Foreign key reference to product
+exports.Product.hasMany(exports.Feature, {
+  foreignKey: 'product_id',
+});
 exports.Feature.belongsTo(exports.Product, {
   foreignKey: 'product_id',
 });
 
-exports.Style = exports.database.define('Style', {
+exports.Style = exports.database.define('style', {
   style_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -81,13 +92,19 @@ exports.Style = exports.database.define('Style', {
   default_style: {
     type: DataTypes.BOOLEAN,
   },
+}, {
+  underscored: true,
+  timestamp: false,
 });
 // Foreign reference to products
+exports.Product.hasMany(exports.Style, {
+  foreignKey: 'product_id',
+});
 exports.Style.belongsTo(exports.Product, {
   foreignKey: 'product_id',
 });
 
-exports.SKU = exports.database.define('SKU', {
+exports.SKU = exports.database.define('sku', {
   sku_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -99,13 +116,20 @@ exports.SKU = exports.database.define('SKU', {
   size: {
     type: DataTypes.STRING(16),
   },
+}, {
+  tableName: 'skus',
+  underscored: true,
+  timestamp: false,
 });
 
+exports.Style.hasMany(exports.SKU, {
+  foreignKey: 'style_id',
+});
 exports.SKU.belongsTo(exports.Style, {
   foreignKey: 'style_id',
 });
 
-exports.Photo = exports.database.define('Photo', {
+exports.Photo = exports.database.define('photo', {
   photo_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -117,13 +141,19 @@ exports.Photo = exports.database.define('Photo', {
   url: {
     type: DataTypes.TEXT,
   },
+}, {
+  underscored: true,
+  timestamp: false,
 });
 
+exports.Style.hasMany(exports.Photo, {
+  foreignKey: 'style_id',
+});
 exports.Photo.belongsTo(exports.Style, {
   foreignKey: 'style_id',
 });
 
-exports.Related = exports.database.define('Related', {
+exports.Related = exports.database.define('related', {
   related_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -132,8 +162,15 @@ exports.Related = exports.database.define('Related', {
   related_product_id: {
     type: DataTypes.INTEGER,
   },
+}, {
+  freezeTableName: true,
+  underscored: true,
+  timestamp: false,
 });
 
+exports.Product.hasMany(exports.Related, {
+  foreignKey: 'current_product_id',
+});
 exports.Related.belongsTo(exports.Product, {
   foreignKey: 'current_product_id',
 });
