@@ -7,7 +7,7 @@ const dbPass = 'student';
 exports.database = new Sequelize(dbName, dbUser, dbPass, {
   host: 'localhost',
   dialect: 'mariadb',
-  logging: console.log,
+  logging: false,
 });
 
 exports.database.authenticate()
@@ -26,7 +26,6 @@ exports.Product = exports.database.define('product', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    underscored: true,
   },
   name: {
     type: DataTypes.STRING(128),
@@ -89,9 +88,8 @@ exports.Style = exports.database.define('style', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  default_style: {
+  'default?': {
     type: DataTypes.BOOLEAN,
-    as: 'default?',
   },
 }, {
   underscored: true,
