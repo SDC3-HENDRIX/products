@@ -21,13 +21,7 @@ app.get('/', (req, res) => {
 app.get('/products', (req, res) => {
   const page = Number(req.query.page);
   const count = Number(req.query.count);
-  let pageOffset;
-
-  if (page > 1) {
-    pageOffset = page * count;
-  } else {
-    pageOffset = 0;
-  }
+  let pageOffset = (page - 1) * count;
 
   return getProducts(pageOffset, count)
     .then((results) => {
@@ -77,6 +71,12 @@ app.get('/products/:product_id/styles', (req, res) => {
   return getProductStyles(productId)
     .then((results) => {
       // Adds product ID back
+      for (var i = 0; i < results.length; i++) {
+        if (results[i].sale_price === null) {
+          results[i].sale_price = '0';
+        }
+      }
+
       const formattedResults = {
         product_id: req.params.product_id,
         results,
