@@ -7,7 +7,6 @@ const dbPass = 'student';
 exports.database = new Sequelize(dbName, dbUser, dbPass, {
   host: 'localhost',
   dialect: 'mariadb',
-  logging: console.log,
 });
 
 exports.database.authenticate()
@@ -18,9 +17,11 @@ exports.database.authenticate()
     console.error(`Failed to connect to ${dbName}`, error);
   });
 
+exports.database.sync({ alter: true })
+  .catch((error) => console.error(error));
 // Model for each table
 exports.Product = exports.database.define('Product', {
-  productId: {
+  product_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -37,14 +38,14 @@ exports.Product = exports.database.define('Product', {
   category: {
     type: DataTypes.STRING(64),
   },
-  defaultPrice: {
+  default_price: {
     type: DataTypes.INTEGER,
   },
 });
 
 // Features
 exports.Feature = exports.database.define('Feature', {
-  featureId: {
+  feature_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -58,11 +59,11 @@ exports.Feature = exports.database.define('Feature', {
 });
 // Foreign key reference to product
 exports.Feature.belongsTo(exports.Product, {
-  foreignKey: 'productId',
+  foreignKey: 'product_id',
 });
 
 exports.Style = exports.database.define('Style', {
-  styleId: {
+  style_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -70,24 +71,24 @@ exports.Style = exports.database.define('Style', {
   name: {
     type: DataTypes.STRING(128),
   },
-  originalPrice: {
+  original_price: {
     type: DataTypes.INTEGER,
   },
-  salePrice: {
+  sale_price: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  defaultStyle: {
+  default_style: {
     type: DataTypes.BOOLEAN,
   },
 });
 // Foreign reference to products
 exports.Style.belongsTo(exports.Product, {
-  foreignKey: 'productId',
+  foreignKey: 'product_id',
 });
 
 exports.SKU = exports.database.define('SKU', {
-  skuId: {
+  sku_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -101,16 +102,16 @@ exports.SKU = exports.database.define('SKU', {
 });
 
 exports.SKU.belongsTo(exports.Style, {
-  foreignKey: 'styleId',
+  foreignKey: 'style_id',
 });
 
 exports.Photo = exports.database.define('Photo', {
-  photoId: {
+  photo_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  thumbnailUrl: {
+  thumbnail_url: {
     type: DataTypes.TEXT,
   },
   url: {
@@ -119,22 +120,20 @@ exports.Photo = exports.database.define('Photo', {
 });
 
 exports.Photo.belongsTo(exports.Style, {
-  foreignKey: 'styleId',
+  foreignKey: 'style_id',
 });
 
 exports.Related = exports.database.define('Related', {
-  relatedId: {
+  related_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  relatedProductId: {
+  related_product_id: {
     type: DataTypes.INTEGER,
   },
 });
 
 exports.Related.belongsTo(exports.Product, {
-  foreignKey: 'currentProductId',
+  foreignKey: 'current_product_id',
 });
-
-exports.database.sync({ alter: true });
