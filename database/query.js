@@ -4,15 +4,12 @@ const {
 
 // create a query
 // get products by page and count
-exports.getProducts = (page, count) => {
-
-  return Product.findAll({
-    attributes: { exclude: ['createdAt', 'updatedAt'] },
-    offset: page,
-    limit: count,
-  })
-    .catch((error) => console.error('Error when querying products', error));
-};
+exports.getProducts = (page, count) => Product.findAll({
+  attributes: { exclude: ['createdAt', 'updatedAt'] },
+  offset: page,
+  limit: count,
+})
+  .catch((error) => console.error('Error when querying products', error));
 
 exports.getOneProduct = (productId) => Product.findOne({
   attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -31,7 +28,8 @@ exports.getRelatedProducts = (productId) => Related.findAll({
     current_product_id: productId,
   },
   order: ['related_product_id'],
-});
+})
+  .catch((error) => { console.error('Error on querying related products', error); });
 
 exports.getProductStyles = (productId) => Style.findAll({
   where: { product_id: productId },
@@ -41,6 +39,7 @@ exports.getProductStyles = (productId) => Style.findAll({
     attributes: ['thumbnail_url', 'url'],
   }, {
     model: SKU,
-    attributes: ['quantity', 'size'],
+    attributes: ['sku_id', 'quantity', 'size'],
   }],
-});
+})
+  .catch((error) => { console.error('Error on querying product styles', error); });
