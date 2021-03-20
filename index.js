@@ -53,6 +53,7 @@ app.get('/products/:product_id/', (req, res) => {
 app.get('/products/:product_id/related', (req, res) => getRelatedProducts(Number(req.params.product_id))
   .then((results) => {
     const resultArray = [];
+
     // transform it into a bare array
     for (let i = 0; i < results.length; i += 1) {
       const current = results[i];
