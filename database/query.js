@@ -21,6 +21,7 @@ exports.getOneProduct = (productId) => Product.findOne({
   include: {
     model: Feature,
     attributes: ['feature', 'value'],
+    required: true,
   },
 });
 
@@ -39,9 +40,11 @@ exports.getProductStyles = (productId) => Style.findAll({
   include: [{
     model: Photo,
     attributes: ['thumbnail_url', 'url'],
+    required: true,
   }, {
     model: SKU,
     attributes: ['sku_id', 'quantity', 'size'],
+    required: true,
   }],
 })
   .catch((error) => { logger.error('Error on querying product styles', error); });
