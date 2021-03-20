@@ -3,21 +3,12 @@ logs
 *.log
 npm-debug.log*
 
-#Package Lock
-#package-lock.json
-
-# Yarn - not using Zero-installs
-.yarn/*
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-.pnp.*
-
-
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# Environment variables
+.env
+.env*
 # Raw data
 *.csv
 data/
