@@ -1,3 +1,5 @@
+const logger = require('../config/winston');
+
 const {
   Product, Feature, Related, Style, SKU, Photo,
 } = require('./model.js');
@@ -9,7 +11,7 @@ exports.getProducts = (page, count) => Product.findAll({
   offset: page,
   limit: count,
 })
-  .catch((error) => console.error('Error when querying products', error));
+  .catch((error) => logger.error('Error when querying products', error));
 
 exports.getOneProduct = (productId) => Product.findOne({
   attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -29,7 +31,7 @@ exports.getRelatedProducts = (productId) => Related.findAll({
   },
   order: ['related_product_id'],
 })
-  .catch((error) => { console.error('Error on querying related products', error); });
+  .catch((error) => { logger.error('Error on querying related products', error); });
 
 exports.getProductStyles = (productId) => Style.findAll({
   where: { product_id: productId },
@@ -42,4 +44,4 @@ exports.getProductStyles = (productId) => Style.findAll({
     attributes: ['sku_id', 'quantity', 'size'],
   }],
 })
-  .catch((error) => { console.error('Error on querying product styles', error); });
+  .catch((error) => { logger.error('Error on querying product styles', error); });
