@@ -1,27 +1,39 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes, Model } = require('sequelize');
+const logger = require('../config/winston');
+
 // connect to database
 const dbName = 'sdcProduct';
 const dbUser = 'student';
 const dbPass = 'student';
 
-exports.database = new Sequelize(dbName, dbUser, dbPass, {
+// Database setup
+const sequelize = new Sequelize(dbName, dbUser, dbPass, {
   host: 'localhost',
   dialect: 'mariadb',
-  logging: false,
+  logging: (msg) => logger.debug(msg),
 });
 
-exports.database.authenticate()
+sequelize.authenticate()
   .then(() => {
-    console.log(`Connection to ${dbName} successful`);
+    logger.log('info', `Connection to ${dbName} successful`);
   })
   .catch((error) => {
-    console.error(`Failed to connect to ${dbName}`, error);
+    logger.error(`Failed to connect to ${dbName}`, error);
   });
 
-exports.database.sync({ alter: true })
-  .catch((error) => console.error(error));
+sequelize.sync({ alter: true })
+  .catch((error) => logger.error(`Error while syncing ${error}`));
+
 // Model for each table
-exports.Product = exports.database.define('product', {
+class Product extends Model {}
+class Feature extends Model {}
+class Style extends Model {}
+class SKU extends Model {}
+class Photo extends Model {}
+class Related extends Model {}
+
+// Class instantiation for the models
+Product.init({
   product_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -43,12 +55,12 @@ exports.Product = exports.database.define('product', {
     type: DataTypes.INTEGER,
   },
 }, {
+  sequelize,
+  modelName: 'product',
   underscored: true,
-  timestamp: false,
 });
 
-// Features
-exports.Feature = exports.database.define('feature', {
+Feature.init({
   feature_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -61,25 +73,19 @@ exports.Feature = exports.database.define('feature', {
     type: DataTypes.STRING(64),
   },
 }, {
+  sequelize,
+  modelName: 'feature',
   underscored: true,
-  timestamp: false,
-});
-// Foreign key reference to product
-exports.Product.hasMany(exports.Feature, {
-  foreignKey: 'product_id',
-});
-exports.Feature.belongsTo(exports.Product, {
-  foreignKey: 'product_id',
 });
 
-exports.Style = exports.database.define('style', {
+Style.init({
   style_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   name: {
-    type: DataTypes.STRING(128),
+    type: DataTypes.STRING(255),
   },
   original_price: {
     type: DataTypes.INTEGER,
@@ -92,18 +98,12 @@ exports.Style = exports.database.define('style', {
     type: DataTypes.BOOLEAN,
   },
 }, {
+  sequelize,
+  modelName: 'style',
   underscored: true,
-  timestamp: false,
-});
-// Foreign reference to products
-exports.Product.hasMany(exports.Style, {
-  foreignKey: 'product_id',
-});
-exports.Style.belongsTo(exports.Product, {
-  foreignKey: 'product_id',
 });
 
-exports.SKU = exports.database.define('sku', {
+SKU.init({
   sku_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -116,19 +116,12 @@ exports.SKU = exports.database.define('sku', {
     type: DataTypes.STRING(16),
   },
 }, {
-  tableName: 'skus',
+  sequelize,
+  modelName: 'sku',
   underscored: true,
-  timestamp: false,
 });
 
-exports.Style.hasMany(exports.SKU, {
-  foreignKey: 'style_id',
-});
-exports.SKU.belongsTo(exports.Style, {
-  foreignKey: 'style_id',
-});
-
-exports.Photo = exports.database.define('photo', {
+Photo.init({
   photo_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -141,35 +134,74 @@ exports.Photo = exports.database.define('photo', {
     type: DataTypes.TEXT,
   },
 }, {
+  sequelize,
+  modelName: 'photo',
   underscored: true,
-  timestamp: false,
 });
 
-exports.Style.hasMany(exports.Photo, {
-  foreignKey: 'style_id',
-});
-exports.Photo.belongsTo(exports.Style, {
-  foreignKey: 'style_id',
-});
-
-exports.Related = exports.database.define('related', {
+Related.init({
   related_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  related_product_id: {
+  related_poduct_id: {
     type: DataTypes.INTEGER,
   },
 }, {
+  sequelize,
+  modelName: 'related',
   freezeTableName: true,
   underscored: true,
-  timestamp: false,
 });
 
-exports.Product.hasMany(exports.Related, {
+// Foreign key association
+Product.hasMany(Feature, {
+  foreignKey: 'product_id',
+});
+Product.hasMany(Style, {
+  foreignKey: 'product_id',
+});
+Product.hasMany(Related, {
   foreignKey: 'current_product_id',
 });
-exports.Related.belongsTo(exports.Product, {
+
+// Style
+Style.hasMany(SKU, {
+  foreignKey: 'style_id',
+});
+Style.hasMany(Photo, {
+  foreignKey: 'style_id',
+});
+Style.belongsTo(Product, {
+  foreignKey: 'product_id',
+});
+
+// Feature
+Feature.belongsTo(Product, {
+  foreignKey: 'product_id',
+});
+
+// SKU
+SKU.belongsTo(Style, {
+  foreignKey: 'style_id',
+});
+
+// Photo
+Photo.belongsTo(Style, {
+  foreignKey: 'style_id',
+});
+
+// Related
+Related.belongsTo(Product, {
   foreignKey: 'current_product_id',
 });
+
+module.exports = {
+  Product,
+  Feature,
+  Style,
+  Photo,
+  SKU,
+  Related,
+};
