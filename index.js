@@ -84,6 +84,6 @@ app.get('/products/:product_id/styles', (req, res) => {
 });
 
 // loader.io
-app.get('/loaderio-55e4f368da93357eececafe20feda8ad/', (req, res) => {
-  res.send('loaderio-55e4f368da93357eececafe20feda8ad');
+app.get('/loaderio-1d381886955d5f81d33795ea3f08b9d8', (req, res) => {
+  res.send('loaderio-1d381886955d5f81d33795ea3f08b9d8');
 });
