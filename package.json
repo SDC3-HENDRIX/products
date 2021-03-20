@@ -41,7 +41,8 @@
     "mariadb": "^2.5.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
-    "sequelize": "^6.5.1"
+    "sequelize": "^6.5.1",
+    "winston": "^3.3.3"
   },
   "peerDependencies": {
     "eslint-config-airbnb": "*",
