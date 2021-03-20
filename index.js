@@ -82,3 +82,8 @@ app.get('/products/:product_id/styles', (req, res) => {
       res.status(500).send(`There was an error fetching styles for product ${productId}`);
     });
 });
+
+// loader.io
+app.get('/loaderio-55e4f368da93357eececafe20feda8ad/', (req, res) => {
+  res.send('loaderio-55e4f368da93357eececafe20feda8ad');
+});
