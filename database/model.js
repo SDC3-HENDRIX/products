@@ -76,6 +76,7 @@ Feature.init({
   sequelize,
   modelName: 'feature',
   underscored: true,
+  indexes: [{ fields: ['product_id'] }],
 });
 
 Style.init({
@@ -101,6 +102,7 @@ Style.init({
   sequelize,
   modelName: 'style',
   underscored: true,
+  indexes: [{ fields: ['product_id'] }],
 });
 
 SKU.init({
@@ -119,6 +121,7 @@ SKU.init({
   sequelize,
   modelName: 'sku',
   underscored: true,
+  indexes: [{ fields: ['style_id'] }],
 });
 
 Photo.init({
@@ -137,6 +140,7 @@ Photo.init({
   sequelize,
   modelName: 'photo',
   underscored: true,
+  indexes: [{ fields: ['style_id'] }],
 });
 
 Related.init({
@@ -145,7 +149,7 @@ Related.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  related_poduct_id: {
+  related_product_id: {
     type: DataTypes.INTEGER,
   },
 }, {
@@ -153,6 +157,7 @@ Related.init({
   modelName: 'related',
   freezeTableName: true,
   underscored: true,
+  indexes: [{ fields: ['current_product_id', 'related_product_id'] }],
 });
 
 // Foreign key association
