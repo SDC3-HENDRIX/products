@@ -35,7 +35,7 @@ exports.getRelatedProducts = (productId) => Related.findAll({
 
 exports.getProductStyles = (productId) => Style.findAll({
   where: { product_id: productId },
-  attributes: { exclude: ['createdAt', 'updatedAt', 'product_id'] },
+  attributes: { exclude: ['created_at', 'updated_at', 'product_id'] },
   include: [{
     model: Photo,
     attributes: ['thumbnail_url', 'url'],
