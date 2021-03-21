@@ -5,11 +5,9 @@ const {
   Product, Feature, Related, Style, SKU, Photo,
 } = require('./models.js');
 
-db.sync({ alter: true })
-  .then(() => {
-    logger.info(`Successfully connected to database ${process.env.DBNAME}`);
-  })
-  .catch((error) => logger.error(`Failed to connect to database ${process.env.DBNAME} with error ${error}`));
+db.authenticate()
+  .then(() => logger.info('Successfully connected to database'))
+  .catch((err) => logger.error(`Error connecting to database ${err}`));
 
 // create a query
 // get products by page and count

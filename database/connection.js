@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize');
+require('dotenv').config();
+
 const logger = require('../config/winston');
 
 const dbName = process.env.DBNAME;
