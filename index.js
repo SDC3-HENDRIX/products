@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const logger = require('./config/winston');
@@ -7,8 +8,7 @@ const {
 } = require('./database');
 
 const app = express();
-const port = process.env.PORT || 3010;
-
+const port = process.env.PORT;
 
 app.use(morgan('combined', { stream: logger.stream }));
 app.listen(port, () => {
