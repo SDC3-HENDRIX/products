@@ -10,8 +10,8 @@ const {
 
 const logPath = path.join(__dirname, '../logs/combined.log');
 const errorPath = path.join(__dirname, '../logs/error.log');
-
-const targetLevel = process.env.NODE_ENV !== 'production' ? 'debug' : 'info';
+const envState = process.env.NODE_ENV === 'production' ? true : false;
+const targetLevel = envState ? 'debug' : 'info';
 
 const logger = createLogger({
   level: targetLevel,
