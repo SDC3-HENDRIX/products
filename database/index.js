@@ -1,14 +1,25 @@
+const { Op } = require('sequelize');
+const db = require('./connection');
 const logger = require('../config/winston');
-
 const {
   Product, Feature, Related, Style, SKU, Photo,
-} = require('./model.js');
+} = require('./models.js');
+
+db.sync({ alter: true })
+  .then(() => {
+    logger.info(`Successfully connected to database ${process.env.DBNAME}`);
+  })
+  .catch((error) => logger.error(`Failed to connect to database ${process.env.DBNAME} with error ${error}`));
 
 // create a query
 // get products by page and count
 exports.getProducts = (page, count) => Product.findAll({
   attributes: { exclude: ['createdAt', 'updatedAt'] },
-  offset: page,
+  where: {
+    product_id: {
+      [Op.gt]: page,
+    },
+  },
   limit: count,
 })
   .catch((error) => logger.error('Error when querying products', error));
