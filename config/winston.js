@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { createLogger, format, transports } = require('winston');
 const path = require('path');
 
@@ -6,11 +7,13 @@ const {
   timestamp,
   json,
   prettyPrint,
+  colorize,
+  simple,
 } = format;
 
 const logPath = path.join(__dirname, '../logs/combined.log');
 const errorPath = path.join(__dirname, '../logs/error.log');
-const envState = process.env.NODE_ENV === 'production' ? true : false;
+const envState = process.env.NODE_ENV === 'production';
 const targetLevel = envState ? 'debug' : 'info';
 
 const logger = createLogger({
@@ -41,5 +44,15 @@ logger.stream = {
     logger.info(message);
   },
 };
+
+// If we are in dev also log to console
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(new transports.Console({
+    format: combine(
+      colorize(),
+      simple(),
+    ),
+  }));
+}
 
 module.exports = logger;
