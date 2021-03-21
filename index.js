@@ -4,10 +4,11 @@ const logger = require('./config/winston');
 
 const {
   getProducts, getOneProduct, getRelatedProducts, getProductStyles,
-} = require('./database/query');
+} = require('./database');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3010;
+
 
 app.use(morgan('combined', { stream: logger.stream }));
 app.listen(port, () => {
