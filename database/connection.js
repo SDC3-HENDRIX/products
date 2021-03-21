@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 const logger = require('../config/winston');
 
-const dbName = process.env.DBNAME || 'sdcProduct';
+const dbName = process.env.DBNAME;
 const dbUser = 'student';
-const dbPass = process.env.DBPASS || 'student';
+const dbPass = process.env.NODE_ENV === 'production' ? process.env.DBPASS_PROD : process.env.DBPASS_DEV;
 
 const db = new Sequelize(dbName, dbUser, dbPass, {
   host: 'localhost',
