@@ -4,7 +4,7 @@
   "description": "The products service endpoint for System Design Capstone",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles --passWithNoTests",
     "dev-start": "nodemon index.js",
     "start": "node index.js"
   },
