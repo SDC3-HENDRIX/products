@@ -4,7 +4,7 @@ require('dotenv').config();
 const logger = require('../config/winston');
 
 const dbName = process.env.DBNAME;
-const dbUser = 'student';
+const dbUser = process.env.DBUSER;
 const dbPass = process.env.NODE_ENV === 'production' ? process.env.DBPASS_PROD : process.env.DBPASS_DEV;
 
 const db = new Sequelize(dbName, dbUser, dbPass, {
