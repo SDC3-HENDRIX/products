@@ -3,6 +3,12 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/sdc-products
+permissions:
+  - object: /home/ubuntu/sdc-products
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 644
 hooks:
   BeforeInstall:
     - location: scripts/node_setup.sh
