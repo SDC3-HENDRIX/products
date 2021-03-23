@@ -5,7 +5,7 @@ files:
     destination: /home/ubuntu/sdc-products
 permissions:
   - object: /home/ubuntu/sdc-api
-    pattern: "*.*"
+    pattern: "**"
     owner: ubuntu
     group: ubuntu
     mode: 644
