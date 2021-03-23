@@ -4,11 +4,20 @@ files:
   - source: /
     destination: /home/ubuntu/sdc-products
 permissions:
-  - object: /home/ubuntu/sdc-products
-    pattern: "**"
+  - object: /home/ubuntu/sdc-api
+    pattern: "*.*"
     owner: ubuntu
     group: ubuntu
     mode: 644
+    type:
+      - file
+  - object: /home/ubuntu/sdc-api/
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
+    type:
+      - folder
 hooks:
   BeforeInstall:
     - location: scripts/node_setup.sh
