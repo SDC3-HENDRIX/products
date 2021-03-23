@@ -5,5 +5,5 @@ files:
     destination: /home/ubuntu/sdc-products
 hooks:
   BeforeInstall:
-    - location: /scripts/node_setup.bash
-    - location: /scripts/codedeploy_setup.bash
+    - location: scripts/node_setup.sh
+    - location: scripts/codedeploy_setup.sh
