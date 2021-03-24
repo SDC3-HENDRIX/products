@@ -22,8 +22,8 @@ app.get('/', (req, res) => {
 
 // group of products
 app.get('/products', (req, res) => {
-  const page = Number(req.query.page);
-  const count = Number(req.query.count);
+  const page = Number(req.query.page) || 1;
+  const count = Number(req.query.count) || 5;
   const pageOffset = (page - 1) * count;
 
   return getProducts(pageOffset, count)
