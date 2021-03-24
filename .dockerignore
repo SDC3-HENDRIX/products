@@ -1,0 +1,19 @@
+# Other ignorefiles
+.eslint*
+.git*
+
+# Node modules
+node_modules
+npm-debug.log
+
+#Logs
+*.log
+logs
+
+# AWS Stuff
+scripts
+appspec.yml
+
+# Other stuff
+data
+coverage
