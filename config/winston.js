@@ -13,12 +13,10 @@ const {
 
 const logPath = path.join(__dirname, '../logs/combined.log');
 const errorPath = path.join(__dirname, '../logs/error.log');
-const envState = process.env.NODE_ENV === 'production';
-const targetLevel = envState ? 'debug' : 'info';
 
 const logger = createLogger({
-  level: targetLevel,
-  maxsize: 5242880, // 5MB in bytes
+  level: 'info',
+  maxsize: 5242880,
   maxFiles: 5,
   format: combine(
     timestamp({
@@ -46,9 +44,10 @@ logger.stream = {
 };
 
 // If we are in dev also log to console
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   logger.add(new transports.Console({
     format: combine(
+      timestamp(),
       colorize(),
       simple(),
     ),

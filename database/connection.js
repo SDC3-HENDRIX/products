@@ -5,10 +5,11 @@ const logger = require('../config/winston');
 
 const dbName = process.env.DBNAME;
 const dbUser = process.env.DBUSER;
-const dbPass = process.env.NODE_ENV === 'production' ? process.env.DBPASS_PROD : process.env.DBPASS_DEV;
+const dbPass = process.env.DBPASS;
+const dbEndpoint = process.env.ENDPOINT;
 
 const db = new Sequelize(dbName, dbUser, dbPass, {
-  host: 'host.docker.internal',
+  host: dbEndpoint,
   dialect: 'mariadb',
   logging: (msg) => logger.debug(msg),
   pool: {

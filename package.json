@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles --passWithNoTests",
-    "dev-start": "nodemon index.js",
+    "debug": "nodemon --inspect=0.0.0.0:9229 index.js",
     "start": "node index.js"
   },
   "repository": {
@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mariadb": "^2.5.3",
