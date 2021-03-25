@@ -13,7 +13,7 @@ const db = new Sequelize(dbName, dbUser, dbPass, {
   dialect: 'mariadb',
   logging: (msg) => logger.debug(msg),
   pool: {
-    max: 80,
+    max: 5,
     min: 0,
   },
 });
