@@ -10,6 +10,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .env
 .env*
 !.env.example
+docker-compose*
 # Raw data
 *.csv
 data/
