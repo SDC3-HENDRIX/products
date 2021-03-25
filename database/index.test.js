@@ -8,7 +8,7 @@ const logger = require('../config/winston');
 let randomProduct = 1;
 
 beforeAll(() => db.authenticate().then(() => {
-  logger.info(`Connected to ${process.env.DBNAME} for testing`);
+  logger.debug(`Connected to ${process.env.DBNAME} for testing`);
 })
   .catch((err) => logger.error(`Failed to connect to ${process.env.DBNAME} for testing, this was the error ${err}`)));
 
