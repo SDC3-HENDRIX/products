@@ -1,4 +1,5 @@
 require('dotenv').config();
+const numCPUs = require('os').cpus().length;
 const express = require('express');
 const morgan = require('morgan');
 const compression = require('compression');
@@ -15,17 +16,15 @@ const port = process.env.PORT;
 app.use(compression());
 
 if (cluster.isMaster) {
-  const numCPUs = require('os').cpus().length;
   for (let i = 0; i < numCPUs; i += 1) {
     cluster.fork();
   }
 
-  cluster.on('exit', (worker, code, signal) => {
+  cluster.on('exit', (worker) => {
     logger.info(`worker ${worker.process.pid} died`);
     cluster.fork();
-  })
+  });
 } else {
-
   app.use(morgan('combined', { stream: logger.stream }));
   app.listen(port, () => {
     logger.log('info', `SDC Products listening on port ${port}`);
