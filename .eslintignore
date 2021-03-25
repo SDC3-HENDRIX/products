@@ -4,6 +4,7 @@ jest.config.js
 .env*
 *.csv
 *.xml
+data/*
 
 .yarn/*
 !.yarn/releases
