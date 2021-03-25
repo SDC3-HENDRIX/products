@@ -17,3 +17,5 @@ appspec.yml
 # Other stuff
 data
 coverage
+.env*
+*.env
